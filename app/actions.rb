@@ -10,7 +10,16 @@ get '/api/contacts' do
   @contacts.to_json
 end
 
-get '/api/contacts/:id' do
+get '/api/contacts/search' do
+  content_type :json
+  search = params[:search]
+  search = "%#{search}%"
+  @contacts = Contact.where('first_name like ? or last_name like ? or email like ? or address like ?',search, search, search, search)
+  p @contacts
+  @contacts.to_json
+end
+
+get '/api/contact/:id' do
   content_type :json
   begin
     @contact = Contact.find params[:id]
@@ -26,6 +35,7 @@ post '/contacts' do
   @contact.last_name = params[:last_name]
   @contact.email = params[:email]
   @contact.address = params[:address]
+  @contact.avatar = params[:avatar]
   if @contact.save
     erb :_contact, layout: false, locals: { contact: @contact }
   end

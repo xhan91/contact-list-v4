@@ -1,5 +1,5 @@
 function find(id, selectedContact, callback) {
-    $.getJSON('/api/contacts/'+id, function(data, err){
+    $.getJSON('/api/contact/'+id, function(data, err){
         if (err !== "success" || data.error ) {
             alert("Failed to get the contact detail");
         } else {
@@ -18,6 +18,26 @@ function find(id, selectedContact, callback) {
     });
 }
 
+// Input a contact's JSON data
+// Output a DOM with .contact-cell
+function renderContactCell(data) {
+    var DEFAULT_AVATAR = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTinxdP7P880WTMS_X8Kt8_sq0PQr7ybwjmtj_vDJgMXFIfgfOczW96VA';
+    var html = `<li class="collection-item avatar contact-cell row" data-contact-id="${data.id}">
+          <div class="col s12 m8 info-cell">
+            <img src="${data.avatar || DEFAULT_AVATAR}" alt="avatar" class="circle responsive-img">
+            <span data-key="name">Name: ${data.first_name + ' ' + data.last_name}</span><br>
+            <span data-key="email">Email: ${data.email}</span><br>
+            <span data-key="address">Address: ${data.address}</span>
+          </div>
+          <div class="col s12 m4 btn-cell right-align">
+            <button class="delete-btn btn red lighten-2 waves-effect">Delete</button>
+            <button class="edit-btn btn green lighten-2 waves-effect">Edit</button>
+            <button class="detail-btn btn blue lighten-2 waves-effect">Detail</button>
+          </div>
+        </li>`;
+    return html;
+}
+
 $(document).ready(function() {
 
     $('#new-btn').click(function(){
@@ -27,6 +47,45 @@ $(document).ready(function() {
         btn.addClass('disabled');
         $('#new-field').slideToggle(function(){
             btn.removeClass('disabled');
+        });
+    });
+
+    // Clicked Index Button
+    $('#index-btn').click(function(){
+        $.ajax({
+            method: 'get',
+            url: '/api/contacts',
+            beforeSend: function(){
+                $('#index-field').find('li').remove();
+            },
+            success: function(data){
+                data.forEach(function(contact){
+                    var html = renderContactCell(contact);
+                    $('#index-field').find('ul').append(html);
+                });
+            }
+        });
+    });
+
+    // Search Triggered
+    $('nav').on('submit','form',function(event){
+        var form = $(this);
+        event.preventDefault();
+        $.ajax({
+            method: 'get',
+            url: '/api/contacts/search',
+            data: {
+                search: form.find('#search').val()
+            },
+            beforeSend: function(){
+                $('#index-field').find('li').remove();
+            },
+            success: function(data){
+                data.forEach(function(contact){
+                    var html = renderContactCell(contact);
+                    $('#index-field').find('ul').append(html);
+                });
+            }
         });
     });
 
@@ -87,7 +146,10 @@ $(document).ready(function() {
             url: form.attr('action'),
             data: form.serialize(),
             success: function(data) {
-                $('#index-field').find('ul').prepend(data);
+
+                $('#index-field').find('ul').append(data);
+                $('#new-field').find('input').val('');
+                $('#new-field').slideUp();
             }
         });
     })
