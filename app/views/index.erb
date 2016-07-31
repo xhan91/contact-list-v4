@@ -1,1 +1,22 @@
-<h1>Home Page</h1>
+<!-- <div class="container"> -->
+  <div class="row">
+    <aside class="col s12 m3">
+      <div class="collection">
+        <a href="#" class="collection-item">Index</a>
+        <a id="new-btn" href="#" class="collection-item">New</a>
+        <%= erb :_new_field %>
+      </div>
+    </aside>
+    <article class="col s12 m9">
+      <div id="index-field">
+        <ul class="collection">
+          <% @contacts.each do |contact| %>
+            <%= erb :_contact, locals: { contact: contact } %>
+          <% end %>
+        </ul>
+      </div>
+      <div id="search-field">
+      </div>
+    </article>
+  </div>
+<!-- </div> -->

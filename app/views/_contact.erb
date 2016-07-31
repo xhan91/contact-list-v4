@@ -1,0 +1,14 @@
+<% DEFAULT_AVATAR = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTinxdP7P880WTMS_X8Kt8_sq0PQr7ybwjmtj_vDJgMXFIfgfOczW96VA' %>
+<li class="collection-item avatar contact-cell row" data-contact-id="<%= contact.id %>">
+  <div class="col s12 m8 info-cell">
+    <img src="<%= contact.avatar || DEFAULT_AVATAR %>" alt="avatar" class="circle responsive-img">
+    <span data-key="name">Name: <%= contact.name %></span><br>
+    <span data-key="email">Email: <%= contact.email %></span><br>
+    <span data-key="address">Address: <%= contact.address %></span>
+  </div>
+  <div class="col s12 m4 btn-cell right-align">
+    <button class="delete-btn btn red lighten-2 waves-effect">Delete</button>
+    <button class="edit-btn btn green lighten-2 waves-effect">Edit</button>
+    <button class="detail-btn btn blue lighten-2 waves-effect">Detail</button>
+  </div>
+</li>

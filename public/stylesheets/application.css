@@ -1,0 +1,25 @@
+#index-field {
+  transition: all 1s;
+}
+
+#new-field {
+  display: none;
+  padding: 20px;
+}
+
+#search-field {
+  display: none;
+}
+
+.phone-number {
+  display: none;
+}
+
+body {
+  height: 1000px;
+}
+
+.btn-cell .btn {
+  max-width: 30%;
+  padding: 0 1em;
+}
