@@ -17,6 +17,12 @@ configure :development, :test do
 end
 
 configure :production do
+  set :database, {
+    'production' => {
+      'adapter' => 'postgresql',
+      'database' => APP_ROOT.join('db', 'production.pg')
+    }
+  }
   # Database connection is configured automatically based on the DATABASE_URL
   # environment variable. This is a feature of sinatra/activerecord support.
   #
